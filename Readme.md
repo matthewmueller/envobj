@@ -32,6 +32,6 @@ var env = environment({
 >>> Note: this module pulls environment from the `.env` and `.env.local` using the `localenv` module.
 This only happens in development, but make sure it's doing what you're expecting.
 
-License
+## License
 
 MIT
