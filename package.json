@@ -20,6 +20,7 @@
     "combine-errors": "2.0.0",
     "component-type": "1.2.1",
     "envvar": "1.1.0",
-    "localenv": "0.2.2"
+    "localenv": "0.2.2",
+    "object-assign": "4.0.1"
   }
 }

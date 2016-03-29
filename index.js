@@ -12,6 +12,7 @@ require('localenv')
 
 let MultiError = require('combine-errors')
 let basetype = require('./base-type')
+let assign = require('object-assign')
 let type = require('component-type')
 let envvar = require('envvar')
 
@@ -19,7 +20,13 @@ let envvar = require('envvar')
  * Export `env`
  */
 
-module.exports = Env
+module.exports = function env (fn, envs) {
+  if (typeof fn === 'object') return Env(fn)
+  return function (obj) {
+    assign(process.env, obj || {})
+    return fn(Env(envs))
+  }
+}
 
 /**
  * Env

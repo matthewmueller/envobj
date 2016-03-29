@@ -134,4 +134,43 @@ describe('envobj', function() {
       b: false,
     })
   })
+
+  it('should also typecheck functions', function(done) {
+    var env = environment(boot, {
+      a: String,
+      b: Boolean
+    })
+
+    function boot (obj) {
+      assert.equal(obj.a, 'hi')
+      assert.equal(obj.b, false)
+      done()
+    }
+
+    env({
+      a: 'hi',
+      b: false
+    })
+  })
+
+  it('should fail when a function is called with wrong types', function(done) {
+    var env = environment(boot, {
+      a: String,
+      b: Boolean
+    })
+
+    function boot (obj) {
+      assert.equal(obj.a, true)
+      assert.equal(obj.b, false)
+    }
+
+    try {
+      env({
+        b: false
+      })
+    } catch (e) {
+      assert.equal(e.message, 'No environment variable named "a"')
+      done()
+    }
+  })
 })
