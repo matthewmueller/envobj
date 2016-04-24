@@ -17,7 +17,7 @@
     "mocha": "2.4.5"
   },
   "dependencies": {
-    "combine-errors": "2.0.0",
+    "combine-errors": "3.0.1",
     "component-type": "1.2.1",
     "envvar": "1.1.0",
     "localenv": "0.2.2",
