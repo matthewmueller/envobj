@@ -11,6 +11,7 @@
     "var",
     "variable"
   ],
+  "repository": "matthewmueller/envobj",
   "author": "Matthew Mueller",
   "license": "MIT",
   "devDependencies": {
