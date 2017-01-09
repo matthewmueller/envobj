@@ -1,4 +1,10 @@
 
+1.0.3 / 2017-01-08
+==================
+
+  * Merge pull request #3 from ewnd9/patch-1
+  * add repository to package.json
+
 1.0.2 / 2016-04-24
 ==================
 
