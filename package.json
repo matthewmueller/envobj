@@ -3,6 +3,7 @@
   "version": "1.0.3",
   "description": "tiny environment variable helper, i'll use in all my apps",
   "main": "index.js",
+  "typings": "index.d.ts",
   "scripts": {
     "test": "mocha"
   },
