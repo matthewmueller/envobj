@@ -1,4 +1,10 @@
 
+1.0.4 / 2017-06-24
+==================
+
+  * Merge pull request #4 from blakeembrey/ts-def
+  * Add TypeScript definition
+
 1.0.3 / 2017-01-08
 ==================
 
