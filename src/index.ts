@@ -4,22 +4,21 @@ import { BaseError } from "make-error";
  * Create error message from missing and invalid parameters.
  */
 function makeMessage(
-  missing: Set<PropertyKey>,
-  invalid: Map<PropertyKey, any>
+  missing: Array<PropertyKey>,
+  invalid: Array<[PropertyKey, any]>
 ) {
   const message: string[] = [];
 
-  if (missing.size) {
-    const details = Array.from(missing.keys()).join(", ");
+  if (missing.length) {
+    const details = missing.join(", ");
 
     message.push(`Missing values: ${details}`);
   }
 
-  if (invalid.size) {
-    const details = Array.from(
-      invalid.entries(),
-      ([key, value]) => `${String(key)}: ${value}`
-    ).join(", ");
+  if (invalid.length) {
+    const details = invalid
+      .map(([key, value]) => `${String(key)}: ${value}`)
+      .join(", ");
 
     message.push(`Invalid values: ${details}`);
   }
@@ -31,7 +30,7 @@ function makeMessage(
  * Invalid environment error.
  */
 export class InvalidEnvError<T extends PropertyKey> extends BaseError {
-  constructor(public missing: Set<T>, public invalid: Map<T, any>) {
+  constructor(public missing: T[], public invalid: Array<[T, any]>) {
     super(makeMessage(missing, invalid));
   }
 }
@@ -64,8 +63,8 @@ export function envobj<T extends Schema>(
   ...sources: Source<keyof T>[]
 ): Env<T> {
   const env: Env<T> = Object.create(null);
-  const missing = new Set<keyof T>();
-  const invalid = new Map<keyof T, any>();
+  const missing: Array<keyof T> = [];
+  const invalid: Array<[keyof T, any]> = [];
 
   for (const key of Object.keys(schema) as (keyof T)[]) {
     let value: string | undefined = source[key];
@@ -76,16 +75,16 @@ export function envobj<T extends Schema>(
     }
 
     if (value === undefined) {
-      missing.add(key);
+      missing.push(key);
     } else {
       const result = schema[key](value);
-      if (result === undefined) invalid.set(key, value);
+      if (result === undefined) invalid.push([key, value]);
       env[key] = result;
     }
   }
 
   // Throw on invalid environment.
-  if (invalid.size || missing.size) {
+  if (invalid.length || missing.length) {
     throw new InvalidEnvError(missing, invalid);
   }
 
