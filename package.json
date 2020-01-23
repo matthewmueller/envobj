@@ -1,6 +1,6 @@
 {
   "name": "envobj",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "Tiny environment variable helper",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
