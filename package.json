@@ -1,28 +1,79 @@
 {
   "name": "envobj",
   "version": "1.0.5",
-  "description": "tiny environment variable helper, i'll use in all my apps",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "description": "Tiny environment variable helper",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
-    "test": "mocha"
+    "prettier": "prettier --write",
+    "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --quiet --fix",
+    "format": "npm run prettier -- \"{.,src/**}/*.{js,jsx,ts,tsx,json,md,yml,yaml}\"",
+    "build": "rimraf dist/ && tsc",
+    "specs": "jest --coverage",
+    "test": "npm run build && npm run lint && npm run specs",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "env",
     "var",
-    "variable"
+    "variable",
+    "obj",
+    "schema"
   ],
   "repository": "matthewmueller/envobj",
   "author": "Matthew Mueller",
   "license": "MIT",
+  "jest": {
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "transform": {
+      "\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md,yml,yaml}": [
+      "npm run prettier",
+      "git add"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
-    "mocha": "2.4.5"
+    "@types/jest": "^24.9.0",
+    "@types/node": "^13.1.8",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
+    "@typescript-eslint/parser": "^2.17.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.0",
+    "jest": "^25.1.0",
+    "lint-staged": "^10.0.1",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^24.3.0",
+    "typescript": "^3.7.5"
   },
   "dependencies": {
-    "combine-errors": "3.0.1",
-    "component-type": "1.2.1",
-    "envvar": "1.1.0",
-    "localenv": "0.2.2",
-    "object-assign": "4.0.1"
+    "make-error": "^1.3.5"
   }
 }
