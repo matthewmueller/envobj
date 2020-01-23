@@ -20,7 +20,7 @@ describe("envobj", () => {
   });
 
   it("should error on missing keys", () => {
-    expect(() => envobj({ MISSING: string })).toThrowError(InvalidEnvError);
+    expect(() => envobj({ MISSING: string }, {})).toThrowError(InvalidEnvError);
   });
 
   it("should error on invalid keys", () => {
@@ -58,6 +58,18 @@ describe("envobj", () => {
       expect(integer("123")).toEqual(123);
       expect(integer("123.45")).toEqual(undefined);
       expect(integer("invalid")).toEqual(undefined);
+    });
+  });
+
+  describe("localenv integration", () => {
+    beforeAll(() => {
+      require("localenv");
+    });
+
+    it("should load from `.env`", () => {
+      const env = envobj({ LOCALENV_TEST: boolean }, process.env);
+
+      expect(env).toEqual({ LOCALENV_TEST: true });
     });
   });
 });

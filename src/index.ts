@@ -60,6 +60,7 @@ export type Env<T extends Schema> = {
  */
 export function envobj<T extends Schema>(
   schema: T,
+  source: Source<keyof T>,
   ...sources: Source<keyof T>[]
 ): Env<T> {
   const env: Env<T> = Object.create(null);
@@ -67,21 +68,20 @@ export function envobj<T extends Schema>(
   const invalid = new Map<keyof T, any>();
 
   for (const key of Object.keys(schema) as (keyof T)[]) {
-    let found = false;
+    let value: string | undefined = source[key];
 
     for (const source of sources) {
-      const value: string | undefined = source[key];
-
-      if (value !== undefined) {
-        const result = schema[key](value);
-        if (result === undefined) invalid.set(key, source[key]);
-        found = true;
-        env[key] = result;
-        break;
-      }
+      if (value !== undefined) break;
+      value = source[key];
     }
 
-    if (!found) missing.add(key); // Track missing keys.
+    if (value === undefined) {
+      missing.add(key);
+    } else {
+      const result = schema[key](value);
+      if (result === undefined) invalid.set(key, value);
+      env[key] = result;
+    }
   }
 
   // Throw on invalid environment.
